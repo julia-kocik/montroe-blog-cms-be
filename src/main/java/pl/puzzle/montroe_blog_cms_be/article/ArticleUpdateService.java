@@ -12,6 +12,7 @@ import pl.puzzle.montroe_blog_cms_be.article_summary_item.dto.ArticleSummaryItem
 import pl.puzzle.montroe_blog_cms_be.article_table_of_content_item.ArticleTableOfContentItem;
 import pl.puzzle.montroe_blog_cms_be.article_table_of_content_item.dto.ArticleTableOfContentItemCreateRequest;
 import pl.puzzle.montroe_blog_cms_be.article_table_of_content_item.dto.ArticleTableOfContentItemUpdateRequest;
+import pl.puzzle.montroe_blog_cms_be.exception.NotFoundException;
 
 import java.util.Objects;
 import java.util.Set;
@@ -33,7 +34,7 @@ public class ArticleUpdateService {
             ArticleUpdateRequest request
     ) {
         Article article = articleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Article not found"));
+                .orElseThrow(NotFoundException::new);
 
         article.update(request);
 
@@ -90,9 +91,7 @@ public class ArticleUpdateService {
                                 )
                                 .findFirst()
                                 .orElseThrow(() ->
-                                        new RuntimeException(
-                                                "Summary item not found"
-                                        )
+                                        new NotFoundException("Summary item not found")
                                 );
 
                 existingItem.update(
@@ -145,9 +144,7 @@ public class ArticleUpdateService {
                                 )
                                 .findFirst()
                                 .orElseThrow(() ->
-                                        new RuntimeException(
-                                                "Section not found"
-                                        )
+                                        new NotFoundException("Section not found")
                                 );
 
                 existingSection.update(
@@ -197,9 +194,7 @@ public class ArticleUpdateService {
                                 )
                                 .findFirst()
                                 .orElseThrow(() ->
-                                        new RuntimeException(
-                                                "Table of content item not found"
-                                        )
+                                        new NotFoundException("Table of content item not found")
                                 );
 
                 existingItem.update(
