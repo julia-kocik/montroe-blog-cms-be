@@ -20,3 +20,8 @@ spring:
 
   liquibase:
     enabled: false
+
+cms:
+  admin:
+    email: ${CMS_ADMIN_EMAIL:}
+    password: ${CMS_ADMIN_PASSWORD:}
