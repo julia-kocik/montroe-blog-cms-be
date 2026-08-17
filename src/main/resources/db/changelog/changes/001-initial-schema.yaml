@@ -1,0 +1,238 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 001-create-article
+      author: jk
+      changes:
+        - createTable:
+            tableName: article
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: publication_date
+                  type: TIMESTAMP
+
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+
+              - column:
+                  name: image
+                  type: VARCHAR(255)
+
+              - column:
+                  name: path
+                  type: VARCHAR(255)
+
+              - column:
+                  name: lead
+                  type: VARCHAR(255)
+
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+
+
+  - changeSet:
+      id: 002-create-article-summary-item
+      author: jk
+      changes:
+        - createTable:
+            tableName: article_summary_item
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: position
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: name
+                  type: TEXT
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: article_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: article_summary_item
+            baseColumnNames: article_id
+            referencedTableName: article
+            referencedColumnNames: id
+            constraintName: fk_article_summary_item_article
+            onDelete: CASCADE
+
+
+  - changeSet:
+      id: 003-create-article-section
+      author: jk
+      changes:
+        - createTable:
+            tableName: article_section
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: position
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: sub_heading
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: paragraph
+                  type: TEXT
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: image_large
+                  type: VARCHAR(255)
+
+              - column:
+                  name: image_small
+                  type: VARCHAR(255)
+
+              - column:
+                  name: slug
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: article_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: article_section
+            baseColumnNames: article_id
+            referencedTableName: article
+            referencedColumnNames: id
+            constraintName: fk_article_section_article
+            onDelete: CASCADE
+
+
+  - changeSet:
+      id: 004-create-article-table-of-content-item
+      author: jk
+      changes:
+        - createTable:
+            tableName: article_table_of_content_item
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: position
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: link
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: article_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: article_table_of_content_item
+            baseColumnNames: article_id
+            referencedTableName: article
+            referencedColumnNames: id
+            constraintName: fk_article_toc_item_article
+            onDelete: CASCADE
+
+
+  - changeSet:
+      id: 005-create-cms-user
+      author: jk
+      changes:
+        - createTable:
+            tableName: cms_user
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: role
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: enabled
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
