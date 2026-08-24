@@ -17,7 +17,7 @@ import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import java.util.List;
 
 @Configuration
@@ -27,11 +27,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http,
             SecurityContextRepository securityContextRepository
-    ) throws Exception {
+    ) {
 
         http
                 .cors(cors -> {})
-                .csrf(csrf -> csrf.spa())
+                .csrf(csrf -> csrf
+                        .csrfTokenRepository(csrfTokenRepository())
+                )
                 .securityContext(context -> context
                         .securityContextRepository(securityContextRepository)
                 )
@@ -65,6 +67,19 @@ public class SecurityConfig {
                 );
 
         return http.build();
+    }
+
+    @Bean
+    public CookieCsrfTokenRepository csrfTokenRepository() {
+        CookieCsrfTokenRepository repository =
+                new CookieCsrfTokenRepository();
+
+        repository.setCookieCustomizer(cookie -> cookie
+                .sameSite("None")
+                .secure(true)
+        );
+
+        return repository;
     }
 
     @Bean
