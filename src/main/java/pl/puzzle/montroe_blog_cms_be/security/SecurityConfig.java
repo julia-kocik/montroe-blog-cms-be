@@ -2,6 +2,7 @@ package pl.puzzle.montroe_blog_cms_be.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
@@ -45,6 +46,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/csrf", "/auth/login").permitAll()
                         .requestMatchers("/auth/me", "/auth/password").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/article/**").permitAll()
                         .requestMatchers("/article/**").hasRole("ADMIN")
                         .requestMatchers("/users/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
