@@ -69,6 +69,15 @@ public class ArticleController {
         );
     }
 
+    @GetMapping("/path/{path}")
+    public ResponseEntity<Article> getArticleByPath(
+            @PathVariable String path
+    ) {
+        return ResponseEntity.ok(
+                articleGetService.getArticleByPath(path)
+        );
+    }
+
     @GetMapping
     public ResponseEntity<List<ArticleListItemResponse>> getAllArticles() {
         return ResponseEntity.ok(

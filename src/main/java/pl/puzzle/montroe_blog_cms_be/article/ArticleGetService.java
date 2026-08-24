@@ -18,4 +18,11 @@ public class ArticleGetService {
         return articleRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
     }
+
+    public Article getArticleByPath(String path) {
+        return articleRepository.findByPath(path)
+                .orElseThrow(() ->
+                        new RuntimeException("Article not found")
+                );
+    }
 }
