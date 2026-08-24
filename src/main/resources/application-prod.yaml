@@ -13,3 +13,10 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yaml
+
+server:
+  servlet:
+    session:
+      cookie:
+        same-site: none
+        secure: true
