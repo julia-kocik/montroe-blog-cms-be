@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006-change-article-lead-to-text
+      author: jk
+      changes:
+        - modifyDataType:
+            tableName: article
+            columnName: lead
+            newDataType: TEXT
