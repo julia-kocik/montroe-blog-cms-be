@@ -37,10 +37,8 @@ public class AuthController {
     }
 
     @GetMapping("/csrf")
-    public ResponseEntity<Void> csrf(CsrfToken csrfToken) {
-        csrfToken.getToken();
-
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> csrf(CsrfToken csrfToken) {
+        return ResponseEntity.ok(csrfToken.getToken());
     }
 
     @PostMapping("/login")
