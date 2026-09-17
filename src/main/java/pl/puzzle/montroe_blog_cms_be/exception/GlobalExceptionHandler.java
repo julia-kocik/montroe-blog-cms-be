@@ -27,7 +27,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Void> handleUserAlreadyExists(
             UserAlreadyExistsException exception
     ) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .build();
     }
 
     @ExceptionHandler(LastActiveAdminException.class)
@@ -39,6 +41,20 @@ public class GlobalExceptionHandler {
                 .body(
                         new ErrorResponse(
                                 HttpStatus.CONFLICT.value(),
+                                exception.getMessage()
+                        )
+                );
+    }
+
+    @ExceptionHandler(InvalidFileException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidFile(
+            InvalidFileException exception
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(
+                        new ErrorResponse(
+                                HttpStatus.BAD_REQUEST.value(),
                                 exception.getMessage()
                         )
                 );

@@ -5,7 +5,17 @@ spring:
   liquibase:
     enabled: false
 
+  servlet:
+    multipart:
+      max-file-size: 6MB
+      max-request-size: 6MB
 cms:
   admin:
     email: ${CMS_ADMIN_EMAIL:}
     password: ${CMS_ADMIN_PASSWORD:}
+
+r2:
+  endpoint: ${R2_ENDPOINT}
+  access-key: ${R2_ACCESS_KEY_ID}
+  secret-key: ${R2_SECRET_ACCESS_KEY}
+  bucket: ${R2_BUCKET_NAME}

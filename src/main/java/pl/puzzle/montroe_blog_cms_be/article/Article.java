@@ -79,11 +79,10 @@ public class Article {
         String path = toSlug(articleCreateRequest.name());
         LocalDateTime now = LocalDateTime.now();
 
-        // TODO: image extension
         return Article.builder()
                 .id(UUID.randomUUID())
                 .name(articleCreateRequest.name())
-                .image(path)
+                .image(articleCreateRequest.image())
                 .path(path)
                 .lead(articleCreateRequest.lead())
                 .publicationDate(now)

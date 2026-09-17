@@ -17,6 +17,8 @@ public record ArticleCreateRequest(
         @NotBlank
         String lead,
 
+        String image,
+
         @NotEmpty
         List<@Valid ArticleSummaryItemCreateRequest> summaryItems,
 
