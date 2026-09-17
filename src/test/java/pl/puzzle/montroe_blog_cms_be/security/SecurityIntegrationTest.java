@@ -40,7 +40,6 @@ class SecurityIntegrationTest {
                 .build();
     }
 
-
     @Test
     @WithMockUser(roles = "ADMIN")
     void shouldAuthenticateMockUser() throws Exception {
@@ -51,24 +50,24 @@ class SecurityIntegrationTest {
     }
 
     @Test
-    void shouldReturnUnauthorizedWhenUserIsNotAuthenticated()
+    void shouldAllowUnauthenticatedUserToGetArticles()
             throws Exception {
 
         mockMvc.perform(
                         get("/article")
                 )
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isOk());
     }
 
     @Test
     @WithMockUser(roles = "USER")
-    void shouldReturnForbiddenWhenUserIsNotAdmin()
+    void shouldAllowNonAdminUserToGetArticles()
             throws Exception {
 
         mockMvc.perform(
                         get("/article")
                 )
-                .andExpect(status().isForbidden());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -108,7 +107,6 @@ class SecurityIntegrationTest {
                 )
                 .andExpect(status().isForbidden());
     }
-
 
     @Test
     void shouldReturnUnauthorizedForUsersEndpointWithoutAuthentication()

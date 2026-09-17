@@ -41,6 +41,7 @@ class ArticleUpdateServiceTest {
                 new ArticleCreateRequest(
                         "Old name",
                         "Old lead",
+                        "articles/test-image.jpg",
                         List.of(),
                         List.of(),
                         List.of()
@@ -82,6 +83,7 @@ class ArticleUpdateServiceTest {
                 new ArticleCreateRequest(
                         "Article",
                         "Lead",
+                        "articles/test-image.jpg",
                         List.of(),
                         List.of(),
                         List.of()
@@ -140,6 +142,7 @@ class ArticleUpdateServiceTest {
                 new ArticleCreateRequest(
                         "Article",
                         "Lead",
+                        "articles/test-image.jpg",
                         List.of(),
                         List.of(),
                         List.of()
@@ -195,6 +198,7 @@ class ArticleUpdateServiceTest {
                 new ArticleCreateRequest(
                         "Article",
                         "Lead",
+                        "articles/test-image.jpg",
                         List.of(),
                         List.of(),
                         List.of()
@@ -257,6 +261,7 @@ class ArticleUpdateServiceTest {
                 new ArticleCreateRequest(
                         "Article",
                         "Lead",
+                        "articles/test-image.jpg",
                         List.of(),
                         List.of(),
                         List.of()
@@ -300,6 +305,7 @@ class ArticleUpdateServiceTest {
                 new ArticleCreateRequest(
                         "Article",
                         "Lead",
+                        "articles/test-image.jpg",
                         List.of(),
                         List.of(),
                         List.of()
@@ -381,6 +387,7 @@ class ArticleUpdateServiceTest {
                 new ArticleCreateRequest(
                         "Article",
                         "Lead",
+                        "articles/test-image.jpg",
                         List.of(),
                         List.of(),
                         List.of()

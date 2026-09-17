@@ -43,6 +43,7 @@ class ArticleIntegrationTest {
         ArticleCreateRequest request = new ArticleCreateRequest(
                 "Integration test article",
                 "Integration test lead",
+                "articles/test-image.jpg",
                 List.of(
                         new ArticleSummaryItemCreateRequest(
                                 "First summary"
@@ -108,6 +109,7 @@ class ArticleIntegrationTest {
         ArticleCreateRequest request = new ArticleCreateRequest(
                 "Article to delete",
                 "Lead",
+                "articles/test-image.jpg",
                 List.of(
                         new ArticleSummaryItemCreateRequest(
                                 "Summary"
@@ -188,6 +190,7 @@ class ArticleIntegrationTest {
                 new ArticleCreateRequest(
                         "Original article",
                         "Original lead",
+                        "articles/test-image.jpg",
                         List.of(
                                 new ArticleSummaryItemCreateRequest(
                                         "First summary"

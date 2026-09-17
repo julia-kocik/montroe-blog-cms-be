@@ -31,6 +31,7 @@ class ArticleCreateServiceTest {
         ArticleCreateRequest request = new ArticleCreateRequest(
                 "Test article",
                 "Test lead",
+                "articles/test-image.jpg",
                 List.of(
                         new ArticleSummaryItemCreateRequest(
                                 "Summary"
@@ -83,6 +84,7 @@ class ArticleCreateServiceTest {
         ArticleCreateRequest request = new ArticleCreateRequest(
                 "Montaż instalacji elektrycznej Warszawa",
                 "Test lead",
+                "articles/test-image.jpg",
                 List.of(
                         new ArticleSummaryItemCreateRequest(
                                 "Pierwszy punkt"

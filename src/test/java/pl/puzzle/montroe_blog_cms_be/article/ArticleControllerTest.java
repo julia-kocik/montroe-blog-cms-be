@@ -111,6 +111,7 @@ class ArticleControllerTest {
                 new ArticleCreateRequest(
                         "Test article",
                         "Test lead",
+                        "articles/test-image.jpg",
                         List.of(
                                 new ArticleSummaryItemCreateRequest(
                                         "First summary"
@@ -157,6 +158,7 @@ class ArticleControllerTest {
                 new ArticleCreateRequest(
                         "First article",
                         "First lead",
+                        "articles/test-image.jpg",
                         List.of(
                                 new ArticleSummaryItemCreateRequest(
                                         "Summary"
@@ -182,6 +184,7 @@ class ArticleControllerTest {
                 new ArticleCreateRequest(
                         "Second article",
                         "Second lead",
+                        "articles/test-image.jpg",
                         List.of(
                                 new ArticleSummaryItemCreateRequest(
                                         "Summary"
@@ -227,6 +230,7 @@ class ArticleControllerTest {
                 new ArticleCreateRequest(
                         "Old name",
                         "Old lead",
+                        "articles/test-image.jpg",
                         List.of(
                                 new ArticleSummaryItemCreateRequest(
                                         "Old summary"
@@ -305,6 +309,7 @@ class ArticleControllerTest {
                 new ArticleCreateRequest(
                         "Article to delete",
                         "Lead",
+                        "articles/test-image.jpg",
                         List.of(
                                 new ArticleSummaryItemCreateRequest(
                                         "Summary"
@@ -345,6 +350,7 @@ class ArticleControllerTest {
                 new ArticleCreateRequest(
                         "First article",
                         "First lead",
+                        "articles/test-image.jpg",
                         List.of(
                                 new ArticleSummaryItemCreateRequest(
                                         "Summary"
@@ -370,6 +376,7 @@ class ArticleControllerTest {
                 new ArticleCreateRequest(
                         "Second article",
                         "Second lead",
+                        "articles/test-image.jpg",
                         List.of(
                                 new ArticleSummaryItemCreateRequest(
                                         "Summary"
