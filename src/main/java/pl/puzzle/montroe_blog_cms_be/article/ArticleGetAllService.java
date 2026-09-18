@@ -1,5 +1,6 @@
 package pl.puzzle.montroe_blog_cms_be.article;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pl.puzzle.montroe_blog_cms_be.article.dto.ArticleListItemResponse;
 
@@ -15,7 +16,12 @@ public class ArticleGetAllService {
     }
 
     public List<ArticleListItemResponse> getAllArticles() {
-        return articleRepository.findAll()
+        return articleRepository.findAll(
+                        Sort.by(
+                                Sort.Direction.DESC,
+                                "publicationDate"
+                        )
+                )
                 .stream()
                 .map(article -> new ArticleListItemResponse(
                         article.getId(),
