@@ -6,7 +6,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.puzzle.montroe_blog_cms_be.exception.NotFoundException;
+import pl.puzzle.montroe_blog_cms_be.file.FileStorageService;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,6 +22,9 @@ class ArticleDeleteServiceTest {
     @Mock
     private ArticleRepository articleRepository;
 
+    @Mock
+    private FileStorageService fileStorageService;
+
     @InjectMocks
     private ArticleDeleteService articleDeleteService;
 
@@ -29,6 +34,8 @@ class ArticleDeleteServiceTest {
 
         Article article = Article.builder()
                 .id(articleId)
+                .image("articles/main.jpg")
+                .sections(List.of())
                 .build();
 
         when(articleRepository.findById(articleId))
@@ -37,6 +44,9 @@ class ArticleDeleteServiceTest {
         articleDeleteService.deleteArticle(articleId);
 
         verify(articleRepository).delete(article);
+        verify(articleRepository).flush();
+        verify(fileStorageService)
+                .deleteImage("articles/main.jpg");
     }
 
     @Test
@@ -51,12 +61,5 @@ class ArticleDeleteServiceTest {
         )
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Article not found");
-    }
-
-    @Test
-    void shouldDeleteAllArticles() {
-        articleDeleteService.deleteAllArticles();
-
-        verify(articleRepository).deleteAll();
     }
 }

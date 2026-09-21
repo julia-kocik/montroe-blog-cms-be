@@ -93,11 +93,4 @@ public class ArticleController {
 
         return ResponseEntity.noContent().build();
     }
-
-    @DeleteMapping
-    public ResponseEntity<Void> deleteAllArticles() {
-        articleDeleteService.deleteAllArticles();
-
-        return ResponseEntity.noContent().build();
-    }
 }

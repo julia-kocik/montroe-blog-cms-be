@@ -15,7 +15,8 @@ import pl.puzzle.montroe_blog_cms_be.article_summary_item.dto.ArticleSummaryItem
 import pl.puzzle.montroe_blog_cms_be.article_table_of_content_item.dto.ArticleTableOfContentItemCreateRequest;
 import java.util.UUID;
 import java.util.List;
-
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import pl.puzzle.montroe_blog_cms_be.file.FileStorageService;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -37,6 +38,9 @@ class ArticleIntegrationTest {
 
     @Autowired
     private ArticleUpdateService articleUpdateService;
+
+    @MockitoBean
+    private FileStorageService fileStorageService;
 
     @Test
     void shouldCreateArticleWithAllRelatedEntities() {

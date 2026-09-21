@@ -8,12 +8,15 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 import pl.puzzle.montroe_blog_cms_be.article.dto.ArticleCreateRequest;
 import pl.puzzle.montroe_blog_cms_be.article_section.dto.ArticleSectionCreateRequest;
 import pl.puzzle.montroe_blog_cms_be.article_summary_item.dto.ArticleSummaryItemCreateRequest;
 import pl.puzzle.montroe_blog_cms_be.article_table_of_content_item.dto.ArticleTableOfContentItemCreateRequest;
+import pl.puzzle.montroe_blog_cms_be.file.FileStorageService;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import java.util.UUID;
@@ -45,6 +48,9 @@ class ArticleControllerTest {
 
     @Autowired
     private ArticleRepository articleRepository;
+
+    @MockitoBean
+    private FileStorageService fileStorageService;
 
     @BeforeEach
     void setUp() {
@@ -343,73 +349,6 @@ class ArticleControllerTest {
                 .isEmpty();
     }
 
-    @Test
-    @WithMockUser(roles = "ADMIN")
-    void shouldDeleteAllArticles() throws Exception {
-        articleCreateService.createArticle(
-                new ArticleCreateRequest(
-                        "First article",
-                        "First lead",
-                        "articles/test-image.jpg",
-                        List.of(
-                                new ArticleSummaryItemCreateRequest(
-                                        "Summary"
-                                )
-                        ),
-                        List.of(
-                                new ArticleSectionCreateRequest(
-                                        "Section",
-                                        "Paragraph",
-                                        "",
-                                        ""
-                                )
-                        ),
-                        List.of(
-                                new ArticleTableOfContentItemCreateRequest(
-                                        "Section"
-                                )
-                        )
-                )
-        );
-
-        articleCreateService.createArticle(
-                new ArticleCreateRequest(
-                        "Second article",
-                        "Second lead",
-                        "articles/test-image.jpg",
-                        List.of(
-                                new ArticleSummaryItemCreateRequest(
-                                        "Summary"
-                                )
-                        ),
-                        List.of(
-                                new ArticleSectionCreateRequest(
-                                        "Section",
-                                        "Paragraph",
-                                        "",
-                                        ""
-                                )
-                        ),
-                        List.of(
-                                new ArticleTableOfContentItemCreateRequest(
-                                        "Section"
-                                )
-                        )
-                )
-        );
-
-        assertThat(articleRepository.findAll())
-                .hasSize(2);
-
-        mockMvc.perform(
-                        delete("/article")
-                                .with(csrf())
-                )
-                .andExpect(status().isNoContent());
-
-        assertThat(articleRepository.findAll())
-                .isEmpty();
-    }
 
     @Test
     @WithMockUser(roles = "ADMIN")
