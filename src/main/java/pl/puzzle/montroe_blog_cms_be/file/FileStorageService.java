@@ -136,10 +136,9 @@ public class FileStorageService {
     }
 
     private boolean isJpeg(byte[] bytes) {
-        return bytes.length >= 3
+        return bytes.length >= 2
                 && (bytes[0] & 0xFF) == 0xFF
-                && (bytes[1] & 0xFF) == 0xD8
-                && (bytes[2] & 0xFF) == 0xFF;
+                && (bytes[1] & 0xFF) == 0xD8;
     }
 
     private boolean isPng(byte[] bytes) {
