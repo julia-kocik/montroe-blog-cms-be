@@ -17,6 +17,7 @@ import pl.puzzle.montroe_blog_cms_be.article_table_of_content_item.ArticleTableO
 import pl.puzzle.montroe_blog_cms_be.article_table_of_content_item.dto.ArticleTableOfContentItemCreateRequest;
 import pl.puzzle.montroe_blog_cms_be.article_table_of_content_item.dto.ArticleTableOfContentItemUpdateRequest;
 import pl.puzzle.montroe_blog_cms_be.exception.NotFoundException;
+import pl.puzzle.montroe_blog_cms_be.file.FileStorageService;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +32,9 @@ class ArticleUpdateServiceTest {
 
     @Mock
     private ArticleRepository articleRepository;
+
+    @Mock
+    private FileStorageService fileStorageService;
 
     @InjectMocks
     private ArticleUpdateService articleUpdateService;

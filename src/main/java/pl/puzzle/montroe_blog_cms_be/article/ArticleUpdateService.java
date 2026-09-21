@@ -13,7 +13,10 @@ import pl.puzzle.montroe_blog_cms_be.article_table_of_content_item.ArticleTableO
 import pl.puzzle.montroe_blog_cms_be.article_table_of_content_item.dto.ArticleTableOfContentItemCreateRequest;
 import pl.puzzle.montroe_blog_cms_be.article_table_of_content_item.dto.ArticleTableOfContentItemUpdateRequest;
 import pl.puzzle.montroe_blog_cms_be.exception.NotFoundException;
+import pl.puzzle.montroe_blog_cms_be.file.FileStorageService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -23,9 +26,14 @@ import java.util.stream.Collectors;
 public class ArticleUpdateService {
 
     private final ArticleRepository articleRepository;
+    private final FileStorageService fileStorageService;
 
-    public ArticleUpdateService(ArticleRepository articleRepository) {
+    public ArticleUpdateService(
+            ArticleRepository articleRepository,
+            FileStorageService fileStorageService
+    ) {
         this.articleRepository = articleRepository;
+        this.fileStorageService = fileStorageService;
     }
 
     @Transactional
@@ -35,6 +43,8 @@ public class ArticleUpdateService {
     ) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(NotFoundException::new);
+
+        String oldImage = article.getImage();
 
         article.update(request);
 
@@ -48,6 +58,16 @@ public class ArticleUpdateService {
 
         if (request.tableOfContentItems() != null) {
             updateTableOfContentItems(article, request);
+        }
+
+        if (request.image() != null
+                && !request.image().equals(oldImage)
+                && oldImage != null
+                && !oldImage.isBlank()) {
+
+            articleRepository.flush();
+
+            fileStorageService.deleteImage(oldImage);
         }
 
         return article;
@@ -91,7 +111,9 @@ public class ArticleUpdateService {
                                 )
                                 .findFirst()
                                 .orElseThrow(() ->
-                                        new NotFoundException("Summary item not found")
+                                        new NotFoundException(
+                                                "Summary item not found"
+                                        )
                                 );
 
                 existingItem.update(
@@ -106,10 +128,32 @@ public class ArticleUpdateService {
             Article article,
             ArticleUpdateRequest request
     ) {
+        List<String> imagesToDelete = new ArrayList<>();
+
         Set<UUID> requestIds = request.sections().stream()
                 .map(ArticleSectionUpdateRequest::id)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
+
+        article.getSections().stream()
+                .filter(section ->
+                        !requestIds.contains(section.getId())
+                )
+                .forEach(section -> {
+                    if (section.getImageLarge() != null
+                            && !section.getImageLarge().isBlank()) {
+                        imagesToDelete.add(
+                                section.getImageLarge()
+                        );
+                    }
+
+                    if (section.getImageSmall() != null
+                            && !section.getImageSmall().isBlank()) {
+                        imagesToDelete.add(
+                                section.getImageSmall()
+                        );
+                    }
+                });
 
         article.getSections().removeIf(
                 section -> !requestIds.contains(section.getId())
@@ -144,8 +188,32 @@ public class ArticleUpdateService {
                                 )
                                 .findFirst()
                                 .orElseThrow(() ->
-                                        new NotFoundException("Section not found")
+                                        new NotFoundException(
+                                                "Section not found"
+                                        )
                                 );
+
+                if (sectionRequest.imageLarge() != null
+                        && !sectionRequest.imageLarge()
+                        .equals(existingSection.getImageLarge())
+                        && existingSection.getImageLarge() != null
+                        && !existingSection.getImageLarge().isBlank()) {
+
+                    imagesToDelete.add(
+                            existingSection.getImageLarge()
+                    );
+                }
+
+                if (sectionRequest.imageSmall() != null
+                        && !sectionRequest.imageSmall()
+                        .equals(existingSection.getImageSmall())
+                        && existingSection.getImageSmall() != null
+                        && !existingSection.getImageSmall().isBlank()) {
+
+                    imagesToDelete.add(
+                            existingSection.getImageSmall()
+                    );
+                }
 
                 existingSection.update(
                         sectionRequest,
@@ -153,6 +221,10 @@ public class ArticleUpdateService {
                 );
             }
         }
+
+        imagesToDelete.stream()
+                .distinct()
+                .forEach(fileStorageService::deleteImage);
     }
 
     private void updateTableOfContentItems(
@@ -190,11 +262,14 @@ public class ArticleUpdateService {
                 ArticleTableOfContentItem existingItem =
                         article.getTableOfContentItems().stream()
                                 .filter(item ->
-                                        item.getId().equals(itemRequest.id())
+                                        item.getId()
+                                                .equals(itemRequest.id())
                                 )
                                 .findFirst()
                                 .orElseThrow(() ->
-                                        new NotFoundException("Table of content item not found")
+                                        new NotFoundException(
+                                                "Table of content item not found"
+                                        )
                                 );
 
                 existingItem.update(
