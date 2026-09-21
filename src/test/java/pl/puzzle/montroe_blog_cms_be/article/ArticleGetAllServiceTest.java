@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Sort;
 import pl.puzzle.montroe_blog_cms_be.article.dto.ArticleListItemResponse;
 
 import java.time.LocalDateTime;
@@ -37,8 +38,14 @@ class ArticleGetAllServiceTest {
                 .path("test-article")
                 .build();
 
-        when(articleRepository.findAll())
-                .thenReturn(List.of(article));
+        when(
+                articleRepository.findAll(
+                        Sort.by(
+                                Sort.Direction.DESC,
+                                "publicationDate"
+                        )
+                )
+        ).thenReturn(List.of(article));
 
         List<ArticleListItemResponse> result =
                 articleGetAllService.getAllArticles();

@@ -59,4 +59,18 @@ public class GlobalExceptionHandler {
                         )
                 );
     }
+
+    @ExceptionHandler(ArticleAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleArticleAlreadyExists(
+            ArticleAlreadyExistsException exception
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(
+                        new ErrorResponse(
+                                HttpStatus.CONFLICT.value(),
+                                exception.getMessage()
+                        )
+                );
+    }
 }

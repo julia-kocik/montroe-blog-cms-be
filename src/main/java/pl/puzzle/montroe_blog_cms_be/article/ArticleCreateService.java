@@ -6,6 +6,7 @@ import pl.puzzle.montroe_blog_cms_be.article.dto.ArticleCreateRequest;
 import pl.puzzle.montroe_blog_cms_be.article_section.ArticleSection;
 import pl.puzzle.montroe_blog_cms_be.article_summary_item.ArticleSummaryItem;
 import pl.puzzle.montroe_blog_cms_be.article_table_of_content_item.ArticleTableOfContentItem;
+import pl.puzzle.montroe_blog_cms_be.exception.ArticleAlreadyExistsException;
 
 @Service
 public class ArticleCreateService {
@@ -19,7 +20,9 @@ public class ArticleCreateService {
     @Transactional
     public Article createArticle(ArticleCreateRequest request) {
         Article article = Article.createArticle(request);
-
+        if (articleRepository.existsByPath(article.getPath())) {
+            throw new ArticleAlreadyExistsException("Article with this path already exists");
+        }
         for (int i = 0; i < request.summaryItems().size(); i++) {
             ArticleSummaryItem item = ArticleSummaryItem.create(
                     request.summaryItems().get(i),

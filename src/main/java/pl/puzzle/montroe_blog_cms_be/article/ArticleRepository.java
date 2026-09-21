@@ -8,4 +8,6 @@ import java.util.UUID;
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, UUID> {
     Optional<Article> findByPath(String path);
+
+    boolean existsByPath(String path);
 }
