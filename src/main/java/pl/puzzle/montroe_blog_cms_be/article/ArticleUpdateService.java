@@ -62,8 +62,7 @@ public class ArticleUpdateService {
 
         if (request.image() != null
                 && !request.image().equals(oldImage)
-                && oldImage != null
-                && !oldImage.isBlank()) {
+                && isR2Image(oldImage)) {
 
             articleRepository.flush();
 
@@ -140,15 +139,13 @@ public class ArticleUpdateService {
                         !requestIds.contains(section.getId())
                 )
                 .forEach(section -> {
-                    if (section.getImageLarge() != null
-                            && !section.getImageLarge().isBlank()) {
+                    if (isR2Image(section.getImageLarge())) {
                         imagesToDelete.add(
                                 section.getImageLarge()
                         );
                     }
 
-                    if (section.getImageSmall() != null
-                            && !section.getImageSmall().isBlank()) {
+                    if (isR2Image(section.getImageSmall())) {
                         imagesToDelete.add(
                                 section.getImageSmall()
                         );
@@ -196,8 +193,7 @@ public class ArticleUpdateService {
                 if (sectionRequest.imageLarge() != null
                         && !sectionRequest.imageLarge()
                         .equals(existingSection.getImageLarge())
-                        && existingSection.getImageLarge() != null
-                        && !existingSection.getImageLarge().isBlank()) {
+                        && isR2Image(existingSection.getImageLarge())) {
 
                     imagesToDelete.add(
                             existingSection.getImageLarge()
@@ -207,8 +203,7 @@ public class ArticleUpdateService {
                 if (sectionRequest.imageSmall() != null
                         && !sectionRequest.imageSmall()
                         .equals(existingSection.getImageSmall())
-                        && existingSection.getImageSmall() != null
-                        && !existingSection.getImageSmall().isBlank()) {
+                        && isR2Image(existingSection.getImageSmall())) {
 
                     imagesToDelete.add(
                             existingSection.getImageSmall()
@@ -278,5 +273,11 @@ public class ArticleUpdateService {
                 );
             }
         }
+    }
+
+    private boolean isR2Image(String key) {
+        return key != null
+                && !key.isBlank()
+                && key.startsWith("articles/");
     }
 }
