@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.puzzle.montroe_blog_cms_be.article.dto.ArticleUpdateRequest;
 import pl.puzzle.montroe_blog_cms_be.article_section.ArticleSection;
+import pl.puzzle.montroe_blog_cms_be.article_section.MobileImageMode;
 import pl.puzzle.montroe_blog_cms_be.article_section.dto.ArticleSectionCreateRequest;
 import pl.puzzle.montroe_blog_cms_be.article_section.dto.ArticleSectionUpdateRequest;
 import pl.puzzle.montroe_blog_cms_be.article_summary_item.ArticleSummaryItem;
@@ -169,7 +170,8 @@ public class ArticleUpdateService {
                                         sectionRequest.subHeading(),
                                         sectionRequest.paragraph(),
                                         sectionRequest.imageLarge(),
-                                        sectionRequest.imageSmall()
+                                        sectionRequest.imageSmall(),
+                                        sectionRequest.mobileImageMode()
                                 ),
                                 article,
                                 position
@@ -200,14 +202,22 @@ public class ArticleUpdateService {
                     );
                 }
 
-                if (sectionRequest.imageSmall() != null
-                        && !sectionRequest.imageSmall()
-                        .equals(existingSection.getImageSmall())
-                        && isR2Image(existingSection.getImageSmall())) {
+                if (isR2Image(existingSection.getImageSmall())) {
 
-                    imagesToDelete.add(
-                            existingSection.getImageSmall()
-                    );
+                    boolean changedCustomImage =
+                            sectionRequest.mobileImageMode() == MobileImageMode.CUSTOM
+                                    && !Objects.equals(
+                                    sectionRequest.imageSmall(),
+                                    existingSection.getImageSmall()
+                            );
+
+                    boolean stoppedUsingCustomImage =
+                            sectionRequest.mobileImageMode() == MobileImageMode.SAME
+                                    || sectionRequest.mobileImageMode() == MobileImageMode.HIDDEN;
+
+                    if (changedCustomImage || stoppedUsingCustomImage) {
+                        imagesToDelete.add(existingSection.getImageSmall());
+                    }
                 }
 
                 existingSection.update(

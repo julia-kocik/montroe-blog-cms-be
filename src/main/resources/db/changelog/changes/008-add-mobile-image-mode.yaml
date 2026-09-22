@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: 008-add-mobile-image-mode
+      author: jk
+      changes:
+        - addColumn:
+            tableName: article_section
+            columns:
+              - column:
+                  name: mobile_image_mode
+                  type: VARCHAR(20)
+                  defaultValue: SAME
+                  constraints:
+                    nullable: false

@@ -3,6 +3,8 @@ package pl.puzzle.montroe_blog_cms_be.article_section;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -44,6 +46,10 @@ public class ArticleSection {
     @Column(name = "image_small")
     private String imageSmall;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "mobile_image_mode", nullable = false)
+    private MobileImageMode mobileImageMode;
+
     @Column(nullable = false)
     private String slug;
 
@@ -63,7 +69,12 @@ public class ArticleSection {
                 .subHeading(request.subHeading())
                 .paragraph(request.paragraph())
                 .imageLarge(request.imageLarge())
-                .imageSmall(request.imageSmall())
+                .imageSmall(
+                        request.mobileImageMode() == MobileImageMode.CUSTOM
+                                ? request.imageSmall()
+                                : null
+                )
+                .mobileImageMode(request.mobileImageMode())
                 .slug(Article.toSlug(request.subHeading()))
                 .article(article)
                 .build();
@@ -86,8 +97,14 @@ public class ArticleSection {
             this.imageLarge = request.imageLarge();
         }
 
-        if (request.imageSmall() != null) {
-            this.imageSmall = request.imageSmall();
+        if (request.mobileImageMode() != null) {
+            this.mobileImageMode = request.mobileImageMode();
+
+            if (request.mobileImageMode() == MobileImageMode.CUSTOM) {
+                this.imageSmall = request.imageSmall();
+            } else {
+                this.imageSmall = null;
+            }
         }
 
         this.position = position;

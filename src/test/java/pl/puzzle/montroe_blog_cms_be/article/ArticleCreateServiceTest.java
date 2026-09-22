@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.puzzle.montroe_blog_cms_be.article.dto.ArticleCreateRequest;
+import pl.puzzle.montroe_blog_cms_be.article_section.MobileImageMode;
 import pl.puzzle.montroe_blog_cms_be.article_section.dto.ArticleSectionCreateRequest;
 import pl.puzzle.montroe_blog_cms_be.article_summary_item.dto.ArticleSummaryItemCreateRequest;
 import pl.puzzle.montroe_blog_cms_be.article_table_of_content_item.dto.ArticleTableOfContentItemCreateRequest;
@@ -42,15 +43,16 @@ class ArticleCreateServiceTest {
                 ),
                 List.of(
                         new ArticleSectionCreateRequest(
-                                "Section",
-                                "Paragraph",
+                                "First section",
+                                "Test paragraph",
                                 "",
-                                ""
+                                "",
+                                MobileImageMode.SAME
                         )
                 ),
                 List.of(
                         new ArticleTableOfContentItemCreateRequest(
-                                "Section"
+                                "First section"
                         )
                 )
         );
@@ -93,9 +95,10 @@ class ArticleCreateServiceTest {
                 List.of(
                         new ArticleSectionCreateRequest(
                                 "Pierwsza sekcja",
-                                "Treść sekcji",
+                                "Test paragraph",
                                 "",
-                                ""
+                                "",
+                                MobileImageMode.SAME
                         )
                 ),
                 List.of(

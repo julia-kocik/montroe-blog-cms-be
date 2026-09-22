@@ -12,6 +12,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 import pl.puzzle.montroe_blog_cms_be.article.dto.ArticleCreateRequest;
+import pl.puzzle.montroe_blog_cms_be.article_section.MobileImageMode;
 import pl.puzzle.montroe_blog_cms_be.article_section.dto.ArticleSectionCreateRequest;
 import pl.puzzle.montroe_blog_cms_be.article_summary_item.dto.ArticleSummaryItemCreateRequest;
 import pl.puzzle.montroe_blog_cms_be.article_table_of_content_item.dto.ArticleTableOfContentItemCreateRequest;
@@ -60,34 +61,35 @@ class ArticleControllerTest {
                 .apply(springSecurity())
                 .build();
     }
-    
+
     @Test
     @WithMockUser(roles = "ADMIN")
     void shouldCreateArticle() throws Exception {
         String request = """
-                {
-                    "name": "Test article",
-                    "lead": "Test lead",
-                    "summaryItems": [
-                        {
-                            "name": "First summary"
-                        }
-                    ],
-                    "sections": [
-                        {
-                            "subHeading": "First section",
-                            "paragraph": "Test paragraph",
-                            "imageLarge": "",
-                            "imageSmall": ""
-                        }
-                    ],
-                    "tableOfContentItems": [
-                        {
-                            "name": "First section"
-                        }
-                    ]
-                }
-                """;
+            {
+                "name": "Test article",
+                "lead": "Test lead",
+                "summaryItems": [
+                    {
+                        "name": "First summary"
+                    }
+                ],
+                "sections": [
+                    {
+                        "subHeading": "First section",
+                        "paragraph": "Test paragraph",
+                        "imageLarge": "",
+                        "imageSmall": "",
+                        "mobileImageMode": "SAME"
+                    }
+                ],
+                "tableOfContentItems": [
+                    {
+                        "name": "First section"
+                    }
+                ]
+            }
+            """;
 
         mockMvc.perform(
                         post("/article")
@@ -106,6 +108,8 @@ class ArticleControllerTest {
                         .value(1))
                 .andExpect(jsonPath("$.sections.length()")
                         .value(1))
+                .andExpect(jsonPath("$.sections[0].mobileImageMode")
+                        .value("SAME"))
                 .andExpect(jsonPath("$.tableOfContentItems.length()")
                         .value(1));
     }
@@ -128,7 +132,8 @@ class ArticleControllerTest {
                                         "First section",
                                         "Test paragraph",
                                         "",
-                                        ""
+                                        "",
+                                        MobileImageMode.SAME
                                 )
                         ),
                         List.of(
@@ -172,10 +177,11 @@ class ArticleControllerTest {
                         ),
                         List.of(
                                 new ArticleSectionCreateRequest(
-                                        "Section",
-                                        "Paragraph",
+                                        "First section",
+                                        "Test paragraph",
                                         "",
-                                        ""
+                                        "",
+                                        MobileImageMode.SAME
                                 )
                         ),
                         List.of(
@@ -198,10 +204,11 @@ class ArticleControllerTest {
                         ),
                         List.of(
                                 new ArticleSectionCreateRequest(
-                                        "Section",
-                                        "Paragraph",
+                                        "First section",
+                                        "Test paragraph",
                                         "",
-                                        ""
+                                        "",
+                                        MobileImageMode.SAME
                                 )
                         ),
                         List.of(
@@ -244,10 +251,11 @@ class ArticleControllerTest {
                         ),
                         List.of(
                                 new ArticleSectionCreateRequest(
-                                        "Old section",
-                                        "Old paragraph",
+                                        "First section",
+                                        "Test paragraph",
                                         "",
-                                        ""
+                                        "",
+                                        MobileImageMode.SAME
                                 )
                         ),
                         List.of(
@@ -323,10 +331,11 @@ class ArticleControllerTest {
                         ),
                         List.of(
                                 new ArticleSectionCreateRequest(
-                                        "Section",
-                                        "Paragraph",
+                                        "First section",
+                                        "Test paragraph",
                                         "",
-                                        ""
+                                        "",
+                                        MobileImageMode.SAME
                                 )
                         ),
                         List.of(

@@ -8,6 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import pl.puzzle.montroe_blog_cms_be.article.dto.ArticleCreateRequest;
 import pl.puzzle.montroe_blog_cms_be.article.dto.ArticleUpdateRequest;
 import pl.puzzle.montroe_blog_cms_be.article_section.ArticleSection;
+import pl.puzzle.montroe_blog_cms_be.article_section.MobileImageMode;
 import pl.puzzle.montroe_blog_cms_be.article_section.dto.ArticleSectionCreateRequest;
 import pl.puzzle.montroe_blog_cms_be.article_section.dto.ArticleSectionUpdateRequest;
 import pl.puzzle.montroe_blog_cms_be.article_summary_item.ArticleSummaryItem;
@@ -318,10 +319,11 @@ class ArticleUpdateServiceTest {
 
         ArticleSection section = ArticleSection.create(
                 new ArticleSectionCreateRequest(
-                        "Old heading",
-                        "Old paragraph",
-                        "old-large.jpg",
-                        "old-small.jpg"
+                        "First section",
+                        "Test paragraph",
+                        "",
+                        "",
+                        MobileImageMode.SAME
                 ),
                 article,
                 1
@@ -346,7 +348,8 @@ class ArticleUpdateServiceTest {
                                 "Nowy nagłówek sekcji",
                                 "New paragraph",
                                 "new-large.jpg",
-                                "new-small.jpg"
+                                "new-small.jpg",
+                                MobileImageMode.CUSTOM
                         )
                 ),
                 null

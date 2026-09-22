@@ -8,6 +8,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import pl.puzzle.montroe_blog_cms_be.article.dto.ArticleCreateRequest;
 import pl.puzzle.montroe_blog_cms_be.article.dto.ArticleUpdateRequest;
+import pl.puzzle.montroe_blog_cms_be.article_section.MobileImageMode;
 import pl.puzzle.montroe_blog_cms_be.article_section.dto.ArticleSectionCreateRequest;
 import pl.puzzle.montroe_blog_cms_be.article_summary_item.ArticleSummaryItem;
 import pl.puzzle.montroe_blog_cms_be.article_summary_item.dto.ArticleSummaryItemCreateRequest;
@@ -59,15 +60,17 @@ class ArticleIntegrationTest {
                 List.of(
                         new ArticleSectionCreateRequest(
                                 "First section",
-                                "First paragraph",
+                                "Test paragraph",
                                 "",
-                                ""
+                                "",
+                                MobileImageMode.SAME
                         ),
                         new ArticleSectionCreateRequest(
-                                "Second section",
-                                "Second paragraph",
+                                "First section",
+                                "Test paragraph",
                                 "",
-                                ""
+                                "",
+                                MobileImageMode.SAME
                         )
                 ),
                 List.of(
@@ -121,10 +124,11 @@ class ArticleIntegrationTest {
                 ),
                 List.of(
                         new ArticleSectionCreateRequest(
-                                "Section",
-                                "Paragraph",
+                                "First section",
+                                "Test paragraph",
                                 "",
-                                ""
+                                "",
+                                MobileImageMode.SAME
                         )
                 ),
                 List.of(
@@ -205,10 +209,11 @@ class ArticleIntegrationTest {
                         ),
                         List.of(
                                 new ArticleSectionCreateRequest(
-                                        "Section",
-                                        "Paragraph",
+                                        "First section",
+                                        "Test paragraph",
                                         "",
-                                        ""
+                                        "",
+                                        MobileImageMode.SAME
                                 )
                         ),
                         List.of(
