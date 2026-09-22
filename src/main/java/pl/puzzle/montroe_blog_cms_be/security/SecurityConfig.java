@@ -108,7 +108,8 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(List.of(
-                "http://localhost:4200"
+                "http://localhost:4200",
+                "https://montroe-cms.com"
         ));
 
         configuration.setAllowedMethods(List.of(
