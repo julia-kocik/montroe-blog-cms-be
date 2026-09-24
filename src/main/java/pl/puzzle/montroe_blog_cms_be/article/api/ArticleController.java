@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.puzzle.montroe_blog_cms_be.article.Article;
 import pl.puzzle.montroe_blog_cms_be.article.ArticleCreateService;
@@ -22,6 +23,7 @@ import pl.puzzle.montroe_blog_cms_be.article.ArticleUpdateService;
 import pl.puzzle.montroe_blog_cms_be.article.dto.ArticleCreateRequest;
 import pl.puzzle.montroe_blog_cms_be.article.dto.ArticleListItemResponse;
 import pl.puzzle.montroe_blog_cms_be.article.dto.ArticleUpdateRequest;
+import pl.puzzle.montroe_blog_cms_be.article.dto.PageResponse;
 
 @RestController
 @RequestMapping("/article")
@@ -82,6 +84,16 @@ public class ArticleController {
     public ResponseEntity<List<ArticleListItemResponse>> getAllArticles() {
         return ResponseEntity.ok(
                 articleGetAllService.getAllArticles()
+        );
+    }
+
+    @GetMapping("/page")
+    public ResponseEntity<PageResponse<ArticleListItemResponse>> getArticlesPage(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "6") int size
+    ) {
+        return ResponseEntity.ok(
+                articleGetAllService.getArticlesPage(page, size)
         );
     }
 
