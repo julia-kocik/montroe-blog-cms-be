@@ -109,7 +109,10 @@ public class SecurityConfig {
 
         configuration.setAllowedOrigins(List.of(
                 "http://localhost:4200",
-                "https://montroe-cms.com"
+                "http://localhost:3000",
+                "https://montroe-cms.com",
+                "https://www.montroe.com",
+                "https://montroe.com"
         ));
 
         configuration.setAllowedMethods(List.of(
