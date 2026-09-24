@@ -21,8 +21,6 @@ public class ArticleGetService {
 
     public Article getArticleByPath(String path) {
         return articleRepository.findByPath(path)
-                .orElseThrow(() ->
-                        new RuntimeException("Article not found")
-                );
+                .orElseThrow(NotFoundException::new);
     }
 }

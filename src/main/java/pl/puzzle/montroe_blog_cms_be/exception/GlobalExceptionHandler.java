@@ -2,74 +2,129 @@ package pl.puzzle.montroe_blog_cms_be.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.puzzle.montroe_blog_cms_be.exception.dto.ErrorResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.AuthenticationException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    private static final Logger logger =
+            LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<Void> handleNotFound(
+    public ResponseEntity<ErrorResponse> handleNotFound(
             NotFoundException exception
     ) {
-        return ResponseEntity.notFound().build();
+        return buildResponse(
+                HttpStatus.NOT_FOUND,
+                exception.getMessage()
+        );
     }
 
     @ExceptionHandler(InvalidPasswordException.class)
-    public ResponseEntity<Void> handleInvalidPassword(
+    public ResponseEntity<ErrorResponse> handleInvalidPassword(
             InvalidPasswordException exception
     ) {
-        return ResponseEntity.badRequest().build();
+        return buildResponse(
+                HttpStatus.BAD_REQUEST,
+                exception.getMessage()
+        );
     }
 
     @ExceptionHandler(UserAlreadyExistsException.class)
-    public ResponseEntity<Void> handleUserAlreadyExists(
+    public ResponseEntity<ErrorResponse> handleUserAlreadyExists(
             UserAlreadyExistsException exception
     ) {
-        return ResponseEntity
-                .status(HttpStatus.CONFLICT)
-                .build();
+        return buildResponse(
+                HttpStatus.CONFLICT,
+                exception.getMessage()
+        );
     }
 
     @ExceptionHandler(LastActiveAdminException.class)
     public ResponseEntity<ErrorResponse> handleLastActiveAdmin(
             LastActiveAdminException exception
     ) {
-        return ResponseEntity
-                .status(HttpStatus.CONFLICT)
-                .body(
-                        new ErrorResponse(
-                                HttpStatus.CONFLICT.value(),
-                                exception.getMessage()
-                        )
-                );
+        return buildResponse(
+                HttpStatus.CONFLICT,
+                exception.getMessage()
+        );
     }
 
     @ExceptionHandler(InvalidFileException.class)
     public ResponseEntity<ErrorResponse> handleInvalidFile(
             InvalidFileException exception
     ) {
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(
-                        new ErrorResponse(
-                                HttpStatus.BAD_REQUEST.value(),
-                                exception.getMessage()
-                        )
-                );
+        return buildResponse(
+                HttpStatus.BAD_REQUEST,
+                exception.getMessage()
+        );
     }
+
 
     @ExceptionHandler(ArticleAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> handleArticleAlreadyExists(
             ArticleAlreadyExistsException exception
     ) {
+        return buildResponse(
+                HttpStatus.CONFLICT,
+                exception.getMessage()
+        );
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleValidation(
+            MethodArgumentNotValidException exception
+    ) {
+        String message = exception.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .findFirst()
+                .map(error ->
+                        error.getField() + ": " + error.getDefaultMessage()
+                )
+                .orElse("Invalid request");
+
+        return buildResponse(
+                HttpStatus.BAD_REQUEST,
+                message
+        );
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorResponse> handleAuthenticationException() {
+        return buildResponse(
+                HttpStatus.UNAUTHORIZED,
+                "Invalid credentials"
+        );
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleUnexpectedException(
+            Exception exception
+    ) {
+        logger.error("Unexpected server error", exception);
+
+        return buildResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                "Internal server error"
+        );
+    }
+
+    private ResponseEntity<ErrorResponse> buildResponse(
+            HttpStatus status,
+            String message
+    ) {
         return ResponseEntity
-                .status(HttpStatus.CONFLICT)
+                .status(status)
                 .body(
                         new ErrorResponse(
-                                HttpStatus.CONFLICT.value(),
-                                exception.getMessage()
+                                status.value(),
+                                message
                         )
                 );
     }
