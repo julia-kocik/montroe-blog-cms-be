@@ -112,7 +112,8 @@ public class SecurityConfig {
                 "http://localhost:3000",
                 "https://montroe-cms.com",
                 "https://www.montroe.com",
-                "https://montroe.com"
+                "https://montroe.com",
+                "https://montroe-cms-portfolio.onrender.com"
         ));
 
         configuration.setAllowedMethods(List.of(
